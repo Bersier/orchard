@@ -3,10 +3,18 @@ package main
 import scala.annotation.targetName
 
 object Orchard:
-  /** Type for ordinal numbers, used as indices. */
+  /**
+   * Type for ordinal numbers, used as indices.
+   *
+   * Ordinals are analogous to points in an affine space.
+   */
   opaque type Ordinal = Int
 
-  /** Type for cardinal numbers, used as quantities. */
+  /**
+   * Type for cardinal numbers, used as quantities.
+   *
+   * Cardinals are analogous to vectors in an affine space.
+   */
   type Cardinal = Int
 
   /** Array type that only accepts ordinal indices. */
@@ -27,6 +35,7 @@ object Orchard:
   extension (i: Ordinal)
     inline def + (j: Int): Ordinal = i + j
     inline def - (j: Int): Ordinal = i - j
+    inline def --> (j: Ordinal): Int = j - i
     def show: String =
       require(i >= 0)
       val next = i + 1

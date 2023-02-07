@@ -10,3 +10,4 @@ def main(): Unit =
   a(second) = 7
   println(a(second))
   println(after(after(first)).show)
+  println((first + 1).show)
