@@ -23,29 +23,49 @@ object Orchard:
     inline def apply(i: Ordinal): T = a(i)
     inline def update(i: Ordinal, newValue: T): Unit = a(i) = newValue
     inline def length: Cardinal = a.length
+    inline def indices: IndexedSeq[Ordinal] = arrayIndices(a)
   given [T]: Conversion[Array[T], Arr[T]] with
     inline def apply(a: Array[T]): Arr[T] = a
 
-  // Conversion functions between ordinals and cardinals
-  @targetName("beforeOrdinal") inline def before(i: Ordinal): Cardinal = i
-  @targetName("afterOrdinal") inline def after(i: Ordinal): Cardinal = i + 1
-  @targetName("beforeCardinal") inline def before(i: Cardinal): Ordinal = i - 1
-  @targetName("afterCardinal") inline def after(i: Cardinal): Ordinal = i
+  extension (i: Cardinal)
+    /**
+     * @return the next index
+     */
+    @targetName("cardinalSucc") inline def succ: Ordinal = i
+    /**
+     * @return the previous index
+     */
+    @targetName("cardinalPred") inline def pred: Ordinal = i - 1
+    /**
+     * @return the range that covers all the ordinals between [[i]] and [[j]].
+     */
+    inline def <-> (j: Cardinal): IndexedSeq[Ordinal] = i until j
 
   extension (i: Ordinal)
-    inline def + (j: Int): Ordinal = i + j
-    inline def - (j: Int): Ordinal = i - j
-    inline def --> (j: Ordinal): Int = j - i
+    inline def + (j: Cardinal): Ordinal = i + j
+    inline def - (j: Cardinal): Ordinal = i - j
+    /**
+     * @return the distance between [[i]] and [[j]]
+     */
+    inline def --> (j: Ordinal): Cardinal = j - i
+    /**
+     * @return the number of all ordinals (starting from the first) up to and including this one
+     */
+    @targetName("ordinalSucc") inline def succ: Cardinal = i + 1
+    /**
+     * @return the number of all ordinals (starting from the first) up to but excluding this one
+     */
+    @targetName("ordinalPred") inline def pred: Cardinal = i
     def show: String =
       require(i >= 0)
       val next = i + 1
-      next.toString + {
+      next.toString + (
         if next > 3 && next < 21 then "th" else next % 10 match
           case 1 => "st"
           case 2 => "nd"
           case 3 => "rd"
           case _ => "th"
-     }
+      )
 
   // Convenience ordinal constants
   val first: Ordinal = 0
@@ -59,3 +79,5 @@ object Orchard:
   val ninth: Ordinal = 8
   val tenth: Ordinal = 9
 end Orchard
+
+private[main] inline def arrayIndices(inline array: Array[?]): Range = array.indices

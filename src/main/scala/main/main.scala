@@ -9,5 +9,7 @@ def main(): Unit =
   println(a(first))
   a(second) = 7
   println(a(second))
-  println(after(after(first)).show)
   println((first + 1).show)
+  println(a.indices)
+  for i <- first.pred <-> third.succ do
+    println(i.show)
