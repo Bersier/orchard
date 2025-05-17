@@ -1,4 +1,4 @@
-package main
+package orchard
 
 import scala.annotation.targetName
 
@@ -7,6 +7,9 @@ object Orchard:
    * Type for ordinal numbers, used as indices.
    *
    * Ordinals are analogous to points in an affine space.
+   *
+   * Ordinals and cardinals are dual in the sense that
+   * cardinals are between ordinals, and ordinals are between cardinals.
    */
   opaque type Ordinal = Int
 
@@ -56,6 +59,9 @@ object Orchard:
      * @return the number of all ordinals (starting from the first) up to but excluding this one
      */
     @targetName("ordinalPred") inline def pred: Cardinal = i
+    /**
+     * Should ideally be moved to a type class instance, and not throw.
+     */
     def show: String =
       require(i >= 0)
       val next = i + 1
@@ -80,4 +86,4 @@ object Orchard:
   val tenth: Ordinal = 9
 end Orchard
 
-private[main] inline def arrayIndices(inline array: Array[?]): Range = array.indices
+private[orchard] inline def arrayIndices(inline array: Array[?]): Range = array.indices
